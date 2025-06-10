@@ -17,6 +17,9 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddScoped<CategoryRepository>();
 builder.Services.AddScoped<CategoryService>();
 
+builder.Services.AddScoped<MealRepository>();
+builder.Services.AddScoped<MealService>();
+
 
 
 builder.Services.AddControllers();

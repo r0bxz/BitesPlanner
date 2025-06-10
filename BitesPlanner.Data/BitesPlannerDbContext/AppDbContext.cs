@@ -1,4 +1,5 @@
 ﻿using BitesPlanner.Data.entities;
+using BitesPlanner.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace BitesPlanner.Data.BitesPlannerDbContext
@@ -9,6 +10,7 @@ namespace BitesPlanner.Data.BitesPlannerDbContext
         {
         }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Meal> Meals { get; set; }
     }
 
 }
