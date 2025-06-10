@@ -16,10 +16,10 @@ namespace BitesPlanner.Data.Entities
         public int Id { get; set; }
         public required string Name { get; set; }
         public string? Description { get; set; }
-        public int Calories { get; set; }
-        public int Carb { get; set; }
-        public int Fat { get; set; }
-        public int Protein { get; set; }
+        public double Calories { get; set; }
+        public double Carb { get; set; }
+        public double Fat { get; set; }
+        public double Protein { get; set; }
         public Category? Category { get; set; }
         [ForeignKey(nameof(entities.Category))]
         public int CategoryId { get; set; }
