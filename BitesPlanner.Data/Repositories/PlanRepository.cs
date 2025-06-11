@@ -19,27 +19,21 @@ namespace BitesPlanner.Data.Repositories
 
         public async Task<List<Plan>> GetAllPlansAsync()
         {
-            return await _context.Plans
-                         .Include(p => p.PlanItems)
-                         .ThenInclude(pi => pi.Meal)
-                         .ToListAsync();
+            return await _context.Plans.Include(p => p.PlanItems).ToListAsync();
         }
 
         public async Task<Plan?> GetPlanById(int id)
         {
-            return await _context.Plans
-                         .Include(p => p.PlanItems)
-                         .ThenInclude(pi => pi.Meal)
-                         .FirstOrDefaultAsync(p => p.Id == id);
+            return await _context.Plans.Include(p => p.PlanItems).FirstOrDefaultAsync(p => p.Id == id);
         }
 
-        public async Task AddPlanAsync (Plan plan)
+        public async Task AddPlanAsync(Plan plan)
         {
             _context.Plans.Add(plan);
             await _context.SaveChangesAsync();
         }
 
-        public async Task UpdatePlanAsync (Plan plan)
+        public async Task UpdatePlanAsync(Plan plan)
         {
             _context.Plans.Update(plan);
             await _context.SaveChangesAsync();
