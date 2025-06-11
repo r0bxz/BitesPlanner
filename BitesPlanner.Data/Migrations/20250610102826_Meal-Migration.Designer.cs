@@ -3,6 +3,7 @@ using BitesPlanner.Data.BitesPlannerDbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BitesPlanner.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250610102826_Meal-Migration")]
+    partial class MealMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,11 +32,11 @@ namespace BitesPlanner.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<double>("Calories")
-                        .HasColumnType("float");
+                    b.Property<int>("Calories")
+                        .HasColumnType("int");
 
-                    b.Property<double>("Carb")
-                        .HasColumnType("float");
+                    b.Property<int>("Carb")
+                        .HasColumnType("int");
 
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
@@ -41,59 +44,21 @@ namespace BitesPlanner.Data.Migrations
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("Fat")
-                        .HasColumnType("float");
+                    b.Property<int>("Fat")
+                        .HasColumnType("int");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<double>("Protein")
-                        .HasColumnType("float");
+                    b.Property<int>("Protein")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Meals");
-                });
-
-            modelBuilder.Entity("BitesPlanner.Data.Entities.Plan", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Plans");
-                });
-
-            modelBuilder.Entity("BitesPlanner.Data.Entities.PlanItem", b =>
-                {
-                    b.Property<int>("PlanId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("LineNumber")
-                        .HasColumnType("int");
-
-                    b.Property<int>("MealId")
-                        .HasColumnType("int");
-
-                    b.Property<double>("Quantity")
-                        .HasColumnType("float");
-
-                    b.HasKey("PlanId", "LineNumber");
-
-                    b.HasIndex("MealId");
-
-                    b.ToTable("PlanItems");
                 });
 
             modelBuilder.Entity("BitesPlanner.Data.entities.Category", b =>
@@ -125,30 +90,6 @@ namespace BitesPlanner.Data.Migrations
                         .IsRequired();
 
                     b.Navigation("Category");
-                });
-
-            modelBuilder.Entity("BitesPlanner.Data.Entities.PlanItem", b =>
-                {
-                    b.HasOne("BitesPlanner.Data.Entities.Meal", "Meal")
-                        .WithMany()
-                        .HasForeignKey("MealId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BitesPlanner.Data.Entities.Plan", "Plan")
-                        .WithMany("PlanItems")
-                        .HasForeignKey("PlanId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Meal");
-
-                    b.Navigation("Plan");
-                });
-
-            modelBuilder.Entity("BitesPlanner.Data.Entities.Plan", b =>
-                {
-                    b.Navigation("PlanItems");
                 });
 
             modelBuilder.Entity("BitesPlanner.Data.entities.Category", b =>
