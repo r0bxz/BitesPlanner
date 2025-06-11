@@ -20,6 +20,9 @@ builder.Services.AddScoped<CategoryService>();
 builder.Services.AddScoped<MealRepository>();
 builder.Services.AddScoped<MealService>();
 
+builder.Services.AddScoped<PlanRepository>();
+builder.Services.AddScoped<PlanService>();
+
 
 
 builder.Services.AddControllers();
