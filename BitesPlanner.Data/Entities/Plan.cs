@@ -15,5 +15,10 @@ namespace BitesPlanner.Data.Entities
         public double TotalCalories { get; set; }
         public ICollection<PlanItem>? PlanItems { get; set; }
 
+        [ForeignKey(nameof(Entities.User))]
+        public int UserId { get; set; } 
+
+        public User? User { get; set; }
+
     }
 }

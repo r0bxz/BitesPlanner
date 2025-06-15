@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BitesPlanner.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250611085937_Plan-Migration2")]
-    partial class PlanMigration2
+    [Migration("20250615112135_Users")]
+    partial class Users
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -73,7 +73,15 @@ namespace BitesPlanner.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<double>("TotalCalories")
+                        .HasColumnType("float");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Plans");
                 });
@@ -97,6 +105,34 @@ namespace BitesPlanner.Data.Migrations
                     b.HasIndex("MealId");
 
                     b.ToTable("PlanItems");
+                });
+
+            modelBuilder.Entity("BitesPlanner.Data.Entities.User", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("BitesPlanner.Data.entities.Category", b =>
@@ -130,6 +166,17 @@ namespace BitesPlanner.Data.Migrations
                     b.Navigation("Category");
                 });
 
+            modelBuilder.Entity("BitesPlanner.Data.Entities.Plan", b =>
+                {
+                    b.HasOne("BitesPlanner.Data.Entities.User", "User")
+                        .WithMany("Plans")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("BitesPlanner.Data.Entities.PlanItem", b =>
                 {
                     b.HasOne("BitesPlanner.Data.Entities.Meal", "Meal")
@@ -152,6 +199,11 @@ namespace BitesPlanner.Data.Migrations
             modelBuilder.Entity("BitesPlanner.Data.Entities.Plan", b =>
                 {
                     b.Navigation("PlanItems");
+                });
+
+            modelBuilder.Entity("BitesPlanner.Data.Entities.User", b =>
+                {
+                    b.Navigation("Plans");
                 });
 
             modelBuilder.Entity("BitesPlanner.Data.entities.Category", b =>
