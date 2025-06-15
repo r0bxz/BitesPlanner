@@ -12,11 +12,9 @@ namespace BitesPlanner.Data.entities
     public class Category
     {
         [Key]
-        [JsonIgnore]
         public int Id { get; set; }
         public required string Name { get; set; }
         public string? Description { get; set; }
-        [JsonIgnore]
         public  ICollection<Meal>? Meals { get; set; } 
     }
 }

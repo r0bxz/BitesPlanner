@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BitesPlanner.Data.BitesPlannerDbContext;
+using BitesPlanner.Data.entities;
 using BitesPlanner.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -33,7 +34,6 @@ namespace BitesPlanner.Data.Repositories
         }
         public async Task UpdateMealAsync(Meal meal)
         {
-            _context.Meals.Update(meal);
             await _context.SaveChangesAsync();
         }
         public async Task DeleteMealAsync(int id)
@@ -45,6 +45,10 @@ namespace BitesPlanner.Data.Repositories
             }
             _context.Meals.Remove(meal);
             await _context.SaveChangesAsync();
+        }
+        public async Task<Meal?> GetMealByNameAsync(string name)
+        {
+            return await _context.Meals.FirstOrDefaultAsync(m => m.Name.ToLower() == name.ToLower());
         }
 
     }

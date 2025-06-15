@@ -35,7 +35,6 @@ namespace BitesPlanner.Data.Repositories
 
         public async Task UpdatePlanAsync(Plan plan)
         {
-            _context.Plans.Update(plan);
             await _context.SaveChangesAsync();
         }
 
@@ -48,6 +47,10 @@ namespace BitesPlanner.Data.Repositories
             }
             _context.Plans.Remove(plan);
             await _context.SaveChangesAsync();
+        }
+        public async Task<Plan?> GetPlanByNameAsync(string name)
+        {
+            return await _context.Plans.FirstOrDefaultAsync(p => p.Name.ToLower() == name.ToLower());
         }
     }
 }

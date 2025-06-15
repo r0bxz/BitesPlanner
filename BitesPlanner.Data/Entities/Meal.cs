@@ -13,7 +13,7 @@ namespace BitesPlanner.Data.Entities
     public class Meal
     {
         [Key]
-        [JsonIgnore]
+        
         public int Id { get; set; }
         public required string Name { get; set; }
         public string? Description { get; set; }
@@ -22,7 +22,6 @@ namespace BitesPlanner.Data.Entities
         public double Fat { get; set; }
         public double Protein { get; set; }
 
-        [JsonIgnore]
         public Category? Category { get; set; }
         [ForeignKey(nameof(entities.Category))]
         public int CategoryId { get; set; }

@@ -34,7 +34,7 @@ namespace BitesPlanner.Data.Repositories
 
         public async Task UpdateCategoryAsync(Category category)
         {
-            _context.Categories.Update(category);
+          
             await _context.SaveChangesAsync();
         }
 
@@ -48,6 +48,12 @@ namespace BitesPlanner.Data.Repositories
             _context.Categories.Remove(category);
             await _context.SaveChangesAsync();
         }
+
+        public async Task<Category?> GetCategoryByNameAsync(string name)
+        {
+            return await _context.Categories.FirstOrDefaultAsync(c => c.Name.ToLower() == name.ToLower());
+        }
+
 
 
     }

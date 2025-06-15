@@ -13,7 +13,6 @@ namespace BitesPlanner.Data.Entities
     public class PlanItem
     {
         [ForeignKey(nameof(Entities.Plan))]
-        [JsonIgnore]
         public int PlanId { get; set; }
 
         public int LineNumber { get; set; }
