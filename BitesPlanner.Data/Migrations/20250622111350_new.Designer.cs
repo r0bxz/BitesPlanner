@@ -3,6 +3,7 @@ using BitesPlanner.Data.BitesPlannerDbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BitesPlanner.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250622111350_new")]
+    partial class @new
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -92,11 +95,11 @@ namespace BitesPlanner.Data.Migrations
 
             modelBuilder.Entity("BitesPlanner.Data.Entities.PlanItem", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("PlanId")
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    b.Property<int>("LineNumber")
+                        .HasColumnType("int");
 
                     b.Property<double>("Calories")
                         .HasColumnType("float");
@@ -107,13 +110,7 @@ namespace BitesPlanner.Data.Migrations
                     b.Property<double>("Fats")
                         .HasColumnType("float");
 
-                    b.Property<int>("LineNumber")
-                        .HasColumnType("int");
-
                     b.Property<int>("MealId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PlanId")
                         .HasColumnType("int");
 
                     b.Property<double>("Protein")
@@ -125,11 +122,9 @@ namespace BitesPlanner.Data.Migrations
                     b.Property<int>("Section")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("PlanId", "LineNumber");
 
                     b.HasIndex("MealId");
-
-                    b.HasIndex("PlanId");
 
                     b.ToTable("PlanItems");
                 });

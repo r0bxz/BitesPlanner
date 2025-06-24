@@ -33,40 +33,38 @@ namespace BitesPlanner.BL.services
 
         public async Task AddPlanAsync(Plan plan)
         {
-            if (plan == null) throw new ApplicationException("plan cannot be null");
+            if (plan == null) throw new ApplicationException("Plan cannot be null");
+
+            await CalculatePlanNutritionAsync(plan);
 
             await ValidatePlan(plan);
 
-            foreach (var item in plan.PlanItems)
-            {
-                item.Meal = await _mealRepository.GetMealByIdAsync(item.MealId);
-            }
-            plan.TotalCalories = plan.PlanItems.Sum(item => item.Meal.Calories * item.Quantity);
 
             await _planRepository.AddPlanAsync(plan);
         }
+
         public async Task UpdatePlanAsync(Plan plan)
         {
-            if (plan == null)  throw new ApplicationException("plan cannot be null");
+            if (plan == null) throw new ApplicationException("Plan cannot be null");
 
-            var dbPlan = await _planRepository.GetPlanById(plan.Id);
-            if(dbPlan==null) throw new ApplicationException("Couldn't find plan with the provided id");
+            var existing = await _planRepository.GetPlanById(plan.Id);
+            if (existing == null) throw new ApplicationException("Couldn't find plan with the provided id");
 
             await ValidatePlan(plan);
+            await CalculatePlanNutritionAsync(plan);
 
-            dbPlan.Name = plan.Name;
-            dbPlan.PlanItems = plan.PlanItems;
+            existing.Name = plan.Name;
+            existing.Description = plan.Description;
+            existing.assignedUserId = plan.assignedUserId;
+            existing.Calories = plan.Calories;
+            existing.protein = plan.protein;
+            existing.carbs = plan.carbs;
+            existing.fats = plan.fats;
+            existing.PlanItems = plan.PlanItems;
 
-
-            foreach (var item in plan.PlanItems)
-            {
-                item.Meal = await _mealRepository.GetMealByIdAsync(item.MealId);
-            }
-
-            plan.TotalCalories = plan.PlanItems.Sum(item => item.Meal.Calories * item.Quantity);
-
-            await _planRepository.UpdatePlanAsync(plan);
+            await _planRepository.UpdatePlanAsync(existing);
         }
+
         public async Task DeletePlanAsync(int id)
         {
             await _planRepository.DeletePlanAsync(id);
@@ -74,17 +72,50 @@ namespace BitesPlanner.BL.services
 
         private async Task ValidatePlan(Plan plan)
         {
-            var existingPlan = await _planRepository.GetPlanByNameAsync(plan.Name);
-            if (existingPlan != null && existingPlan.Id != plan.Id) throw new ApplicationException($"A plan with the name '{plan.Name}' already exists.");
-
             if (plan == null) throw new ApplicationException("Plan cannot be null");
-            if (string.IsNullOrWhiteSpace(plan.Name))  throw new ApplicationException("Plan name cannot be empty");
-            if (plan.PlanItems == null || !plan.PlanItems.Any()) throw new ApplicationException("Plan must have at least one meal item");
+            if (string.IsNullOrWhiteSpace(plan.Name)) throw new ApplicationException("Plan name cannot be empty");
+
+            var existing = await _planRepository.GetPlanByNameAsync(plan.Name);
+            if (existing != null && existing.Id != plan.Id)
+                throw new ApplicationException($"A plan with the name '{plan.Name}' already exists.");
+        }
+
+        private async Task CalculatePlanNutritionAsync(Plan plan)
+        {
+
+            if (plan.PlanItems == null || !plan.PlanItems.Any())
+            {
+                plan.Calories = 0;
+                plan.protein = 0;
+                plan.carbs = 0;
+                plan.fats = 0;
+                return;
+            }
+
+            double totalCalories = 0;
+            double totalProtein = 0;
+            double totalCarb = 0;
+            double totalFat = 0;
 
             foreach (var item in plan.PlanItems)
             {
-                if (item.Quantity <= 0) throw new ApplicationException("Quantity must be greater than zero");
+                var meal = await _mealRepository.GetMealByIdAsync(item.MealId);
+                if (meal == null) throw new ApplicationException($"Meal with ID {item.MealId} not found");
+
+                totalCalories += meal.Calories * item.Quantity;
+                totalProtein += meal.Protein * item.Quantity;
+                totalCarb += meal.Carbs * item.Quantity;
+                totalFat += meal.Fats * item.Quantity;
+
+
+                item.Meal = null;
             }
+
+            plan.Calories = totalCalories;
+            plan.protein = totalProtein;
+            plan.carbs = totalCarb;
+            plan.fats = totalFat;
         }
+
     }
 }

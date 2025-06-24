@@ -12,12 +12,20 @@ namespace BitesPlanner.Data.Entities
     {
         public int Id { get; set; }
         public required string Name { get; set; }
-        public double TotalCalories { get; set; }
+
+        public string? Description { get; set; }
+        public double Calories { get; set; }
+
+        public double protein { get; set; }
+
+        public double fats { get; set; }
+
+        public double carbs { get; set; }
         public ICollection<PlanItem>? PlanItems { get; set; }
 
         [ForeignKey(nameof(Entities.User))]
-        public int UserId { get; set; } 
-
+        public int assignedUserId { get; set; }
+        [JsonIgnore]
         public User? User { get; set; }
 
     }

@@ -3,6 +3,7 @@ using BitesPlanner.Data.BitesPlannerDbContext;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BitesPlanner.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250619141123_intitial")]
+    partial class Intitial
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -71,7 +74,7 @@ namespace BitesPlanner.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("assignedUserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.Property<double>("carbs")
@@ -85,27 +88,15 @@ namespace BitesPlanner.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("assignedUserId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Plans");
                 });
 
             modelBuilder.Entity("BitesPlanner.Data.Entities.PlanItem", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("PlanId")
                         .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<double>("Calories")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Carbs")
-                        .HasColumnType("float");
-
-                    b.Property<double>("Fats")
-                        .HasColumnType("float");
 
                     b.Property<int>("LineNumber")
                         .HasColumnType("int");
@@ -113,23 +104,15 @@ namespace BitesPlanner.Data.Migrations
                     b.Property<int>("MealId")
                         .HasColumnType("int");
 
-                    b.Property<int>("PlanId")
-                        .HasColumnType("int");
-
-                    b.Property<double>("Protein")
-                        .HasColumnType("float");
-
                     b.Property<double>("Quantity")
                         .HasColumnType("float");
 
                     b.Property<int>("Section")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("PlanId", "LineNumber");
 
                     b.HasIndex("MealId");
-
-                    b.HasIndex("PlanId");
 
                     b.ToTable("PlanItems");
                 });
@@ -166,7 +149,7 @@ namespace BitesPlanner.Data.Migrations
                 {
                     b.HasOne("BitesPlanner.Data.Entities.User", "User")
                         .WithMany("Plans")
-                        .HasForeignKey("assignedUserId")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

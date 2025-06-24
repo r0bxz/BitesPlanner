@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BitesPlanner.Data.BitesPlannerDbContext;
-using BitesPlanner.Data.entities;
 using BitesPlanner.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 

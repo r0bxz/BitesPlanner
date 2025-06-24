@@ -1,9 +1,11 @@
 ﻿using BitesPlanner.Data.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BitesPlanner.Web.Controllers
 {
+    
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
@@ -14,7 +16,8 @@ namespace BitesPlanner.Web.Controllers
         {
             _userService = userService;
         }
-
+       
+        [Route("retrieve")]
         [HttpGet]
         public async Task<IActionResult> GetAll()
         {
@@ -28,7 +31,7 @@ namespace BitesPlanner.Web.Controllers
             var user = await _userService.GetByIdAsync(id);
             return Ok(user);
         }
-
+        [Route("add")]
         [HttpPost]
         public async Task<IActionResult> Create(User user)
         {
