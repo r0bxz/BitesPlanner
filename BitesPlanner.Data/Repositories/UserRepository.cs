@@ -46,5 +46,10 @@ namespace BitesPlanner.Data.Repositories
         {
             return await _context.Users.FirstOrDefaultAsync(u => u.UserName.ToLower() == name.ToLower());
         }
+
+        public async Task<User?> GetUserByEmailAsync(string email)
+        {
+            return await _context.Users.FirstOrDefaultAsync(u => u.Email == email);
+        }
     }
 }

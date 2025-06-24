@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using BitesPlanner.Data.entities;
 using BitesPlanner.Data.Entities;
 using BitesPlanner.Data.Repositories;
 
@@ -50,10 +49,9 @@ namespace BitesPlanner.BL.services
             dbMeal.Name = meal.Name;
             dbMeal.Description = meal.Description;
             dbMeal.Calories = meal.Calories;
-            dbMeal.Carb = meal.Carb;
-            dbMeal.Fat = meal.Fat;
+            dbMeal.Carbs = meal.Carbs;
+            dbMeal.Fats = meal.Fats;
             dbMeal.Protein = meal.Protein;
-            dbMeal.CategoryId = meal.CategoryId;
 
             await _mealRepository.UpdateMealAsync(dbMeal);
 
@@ -72,8 +70,8 @@ namespace BitesPlanner.BL.services
             if (meal.Name.Length > 20) throw new ArgumentException("Meal name must not exceed 20 characters.");
             if (!string.IsNullOrWhiteSpace(meal.Description) && meal.Description.Length > 250) throw new ApplicationException("Meal description must not exceed 250 characters.");
             if (meal.Calories < 0) throw new ApplicationException("Calories cannot be negative.");
-            if (meal.Carb < 0) throw new ApplicationException("Carbohydrates cannot be negative.");
-            if (meal.Fat < 0) throw new ApplicationException("Fat cannot be negative.");
+            if (meal.Carbs < 0) throw new ApplicationException("Carbohydrates cannot be negative.");
+            if (meal.Fats < 0) throw new ApplicationException("Fat cannot be negative.");
             if (meal.Protein < 0) throw new ApplicationException("Protein cannot be negative.");
         }
 

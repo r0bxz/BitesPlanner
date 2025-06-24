@@ -12,14 +12,23 @@ namespace BitesPlanner.Data.Entities
 {
     public class PlanItem
     {
+        [Key]
+        public int Id { get; set; }
         [ForeignKey(nameof(Entities.Plan))]
         public int PlanId { get; set; }
+
+        public MealSectionName Section { get; set; }
 
         public int LineNumber { get; set; }
 
         [ForeignKey(nameof(Entities.Meal))]
         public int MealId { get; set; }
         public double Quantity { get; set; }
+
+        public double Calories { get; set; }
+        public double Protein { get; set; }
+        public double Carbs { get; set; }
+        public double Fats { get; set; }
 
         [JsonIgnore]
         public Plan? Plan { get; set; }

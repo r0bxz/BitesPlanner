@@ -5,23 +5,27 @@
 namespace BitesPlanner.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class Users : Migration
+    public partial class Intitial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Categories",
+                name: "Meals",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Calories = table.Column<double>(type: "float", nullable: false),
+                    Carbs = table.Column<double>(type: "float", nullable: false),
+                    Fats = table.Column<double>(type: "float", nullable: false),
+                    Protein = table.Column<double>(type: "float", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Categories", x => x.Id);
+                    table.PrimaryKey("PK_Meals", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -41,7 +45,7 @@ namespace BitesPlanner.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Meals",
+                name: "Plans",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -49,30 +53,9 @@ namespace BitesPlanner.Data.Migrations
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Calories = table.Column<double>(type: "float", nullable: false),
-                    Carb = table.Column<double>(type: "float", nullable: false),
-                    Fat = table.Column<double>(type: "float", nullable: false),
-                    Protein = table.Column<double>(type: "float", nullable: false),
-                    CategoryId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Meals", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Meals_Categories_CategoryId",
-                        column: x => x.CategoryId,
-                        principalTable: "Categories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Plans",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TotalCalories = table.Column<double>(type: "float", nullable: false),
+                    protein = table.Column<double>(type: "float", nullable: false),
+                    fats = table.Column<double>(type: "float", nullable: false),
+                    carbs = table.Column<double>(type: "float", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -92,6 +75,7 @@ namespace BitesPlanner.Data.Migrations
                 {
                     PlanId = table.Column<int>(type: "int", nullable: false),
                     LineNumber = table.Column<int>(type: "int", nullable: false),
+                    Section = table.Column<int>(type: "int", nullable: false),
                     MealId = table.Column<int>(type: "int", nullable: false),
                     Quantity = table.Column<double>(type: "float", nullable: false)
                 },
@@ -111,11 +95,6 @@ namespace BitesPlanner.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Meals_CategoryId",
-                table: "Meals",
-                column: "CategoryId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PlanItems_MealId",
@@ -139,9 +118,6 @@ namespace BitesPlanner.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "Plans");
-
-            migrationBuilder.DropTable(
-                name: "Categories");
 
             migrationBuilder.DropTable(
                 name: "Users");

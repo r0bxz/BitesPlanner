@@ -1,5 +1,4 @@
-﻿using BitesPlanner.Data.entities;
-using BitesPlanner.Data.Entities;
+﻿using BitesPlanner.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace BitesPlanner.Data.BitesPlannerDbContext
@@ -10,7 +9,6 @@ namespace BitesPlanner.Data.BitesPlannerDbContext
         {
         }
 
-        public DbSet<Category> Categories { get; set; }
         public DbSet<Meal> Meals { get; set; }
         public DbSet<Plan> Plans { get; set; }
         public DbSet<PlanItem> PlanItems { get; set; }
@@ -18,10 +16,10 @@ namespace BitesPlanner.Data.BitesPlannerDbContext
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
+          //  base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<PlanItem>()
-                .HasKey(pi => new { pi.PlanId, pi.LineNumber });
+          //  modelBuilder.Entity<PlanItem>()
+            //    .HasKey(pi => new { pi.PlanId, pi.LineNumber });
         }
     }
 }

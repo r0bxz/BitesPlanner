@@ -58,7 +58,7 @@ public class UserService
         if (user.Email == null || !user.Email.Contains("@")) throw new ApplicationException("Invalid email address");
         if (!string.IsNullOrWhiteSpace(user.Role))
         {
-            var allowedRoles = new[] { "Admin", "User"};
+            var allowedRoles = new[] { "Admin", "User","user","admin"};
             if (!allowedRoles.Contains(user.Role))throw new ApplicationException($"Invalid role '{user.Role}'");
         }
 
